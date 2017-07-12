@@ -1,0 +1,34 @@
+server:
+  port: ${PORT:8080}
+spring:
+  application:
+    name: edge-service
+zuul:
+  routes:
+#    user-service:
+#      path: /v1/user-service/**
+#      url: http://127.0.0.1:8101
+    product-service: /v1/product-service/**
+#      path: /v1/product-service/**
+#      url: http://127.0.0.1:8091
+  ignore-local-service: false
+#  ignored-services: '*'
+#  ignored-patterns: /**/**/**
+
+ribbon:
+  eureka:
+    enabled: true
+    ReadTimeout: 20000
+    ConnectTimeout: 20000
+
+
+eureka:
+  instance:
+    metadata-map:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 5
+  client:
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
